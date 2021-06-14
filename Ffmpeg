@@ -1,0 +1,446 @@
+#!/bin/bash
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+    status="0"
+    while [ "$status" -eq 0 ]  
+    do
+    choice=$(whiptail --backtitle "Программа написана на Whiptail"\
+                      --title "Редактирование ауди и видео файла с помощью ffmpeg"\
+                      --menu "
+ffmpeg — это кроссплатформенная open-source библиотека для обработки видео- и аудиофайлов.
+Клавишами верх/низ выберите справку и нажмите enter.
+Для выхода выберите <Cancel>" 0 0 12 \
+ "1" "Воспроизвести видео" \
+ "2" "Посмотреть информацию о видео" \
+ "3" "Длительность файла" \
+ "4" "Ссылки на сайты" \
+ "5" "Превратить набор картинок в видео" \
+ "6" "Видео из одного изображения" \
+ "7" "Добавляем к видео звук" \
+ "8" "Конвертировать видео" \
+ "9" "Извлечение аудио из видео" \
+"10" "Конвертировать файл" \
+"11" "Cохранить качество видеофайла" \
+"12" "Указать кодеки" \
+"13" "Отключение звука в видео" \
+"14" "Изменение разрешения видео или соотношения сторон" \
+"15" "Запись звука с микрофона" \
+"16" "Запись звука с микрофона и изображения с экрана" \
+"17" "Запись звука с динамика" \
+"18" "Определения доступных для захвата аудиоустройств" \
+"19" "Стабилизация видео" \
+"20" "Многопроходное кодирование с помощью ffmpeg" \
+"25" "Сжать файл" \
+"26" "Добавить звук к видео" \
+"27" "Редактировать файл Ffmpeg" \
+"28" "Порезать видео на картинки" \
+"29" "Обрезать видео в ffmpeg" \
+"30" "Нарезать видео на ролики одинаковой длины" \
+"31" "Склеить видео" \
+"32" "Объединяем два видео разных форматов с перекодировкой" \
+"33" "Захват видео без звука" \
+"34" "Объединяем три видео разных форматов с перекодировкой" \
+"35" "Cклеиваем эти видео без перекодировки" \
+"36" "Если у нас видео в форматах .m2ts или .mts, то сначала их необходимо перевести в формат .mkv" \
+"37" "Cклеить без перекодировки" \
+"38" "Если хотим вставить другую аудиодорожку, то сначала убираем прежнюю" \
+"39" "Oбрезаем новую аудиодорожку до длины ролика" \
+"40" "Видео из картинок" \
+"41" "Видео с плавным переходом из image001.png в image002.png" \
+"42" "Видео из одного изображения длительностью 10 секунд" \
+"43" "Пережать webm в mp4 и обратно" \
+"44" "Обрезать видео" \
+"45" "Повернуть видео" \
+"46" "Уменьшить частоту кадров" \
+"47" "Устранение чересстрочности" \
+"48" "Извлечение изображений из видео" \
+"49" "Установка ffmpeg в Ubuntu" \
+"50" "Основные строительные блоки" \
+3>&2 2>&1 1>&3)
+        option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+        case "${option}" in
+         1) 
+whiptail --title "Воспроизвести видео"\
+         --msgbox "ffplay video.mp4" 0 0
+         ;;
+         2)
+whiptail --title "Посмотреть информацию о видео"\
+         --msgbox "\n
+ ffmpeg -i название и расширение файла\n
+ Информация в сокращенном виде:
+ -hide_banner\n
+ Увидеть список всех поддерживаемых форматов:
+ ffmpeg -formats\n
+" 0 0
+         ;;
+         3)
+whiptail --title "Длительность файла"\
+         --msgbox "ffmpeg -i audio.wav 2>&1 | grep Duration" 0 0
+         ;;
+         4)
+whiptail --title "Ссылки на сайты:"\
+         --msgbox "\n
+Заметки эникейщика
+https://any-key.net/ffmpeg-video/#add-audio\n
+Руководство по использованию ffmpeg в Linux
+https://wiki.merionet.ru/servernye-resheniya/46/rukovodstvo-po-ispolzovaniyu-ffmpeg-v-linux/\n
+Понимаем FFmpeg
+http://forasoft.github.io/understanding-ffmpeg/\n
+ffmpeg потоковое вещание для чайников
+https://andreyv.ru/ffmpeg-potokovoe-veshhanie-dlya-chajjnikov.html\n
+FFmpeg работа с видео и звуком
+https://andreyv.ru/ffmpeg-rabota-s-video-i-zvukom\n
+ffmpeg для начинающих
+https://andreyv.ru/ffmpeg.html\n
+ffmpeg Documentation
+https://www.ffmpeg.org/ffmpeg.html\n
+Руководство по FFmpeg libav
+https://habr.com/ru/company/edison/blog/495614/\n
+ffmpeg
+https://dic.academic.ru/dic.nsf/ruwiki/432399\n
+Материал из Википедии
+https://ru.wikipedia.org/wiki/FFmpeg\n
+Как пользоваться ffmpeg
+https://losst.ru/poleznye-komandy-ffmpeg\n
+ffmpeg запись видео с экрана
+https://andreyv.ru/ffmpeg-zapis-video-s-ehkrana.html\n
+Часть 1 - захват картинки
+https://webhamster.ru/mytetrashare/index/mtb0/1482401101n5y07qr37k\n
+" 0 0
+         ;;
+         5)
+whiptail --title "Превратить набор картинок в видео"\
+         --msgbox "\n
+ffmpeg -f image2 -i image%d.jpg video.mpg\n
+Эта команда преобразует все картинки из текущей директории (названные image1.jpg, image2.jpg и т.д.) в видеофайл video.mpg
+(примечание переводчика: мне больше нравится такой формат:
+ffmpeg -r 12 -y -i \"image_%010d.png\" output.mpg\n
+" 0 0
+         ;;
+         6)
+whiptail --title "Видео из одного изображения"\
+         --msgbox "ffmpeg -loop 1 -i image0001.png -c:v libx264 -t 10 -pix_fmt yuv420p output.mp4" 0 0
+         ;;
+        7)
+whiptail --title "Добавляем к видео звук"\
+         --msgbox "ffmpeg -i deaf.mp4 -i sound.mp3 -vcodec copy output.mp4" 0 0
+        ;;
+        8)
+whiptail --title "Преобразовать видео"\
+         --msgbox "ffmpeg -i video.mp4 video.avi" 0 0
+        ;;
+        9)
+whiptail --title "Извлечение аудио из видео"\
+         --msgbox "\n
+Извлечение аудио из видео, добавляете флаг -vn:
+ffmpeg -i video.mp4 -vn audio.mp3\n
+Извлечь звуковую дорожку из видео и сохранить в mp3:
+ffmpeg -i source_video.avi -vn -ar 44100 -ac 2 -ab 192K -f mp3 sound.mp3\n
+Использовать битрейт:
+ffmpeg -i video.mp4 -vn -ab 128k audio.mp3\n
+-ar частота звука: 22050, 441000, 48000
+-ac количество аудиоканалов
+-f  формат аудио, хотя обычно определяется автоматически
+-ab также можно заменить на -b:a
+ffmpeg -i video.mov -vn -ar 44100 -ac 2 -b:a 128k -f mp3 audio.mp3
+" 0 0
+        ;;
+        10)
+./ffmpegConvert
+        ;;
+        11)
+whiptail --title "Cохранить качество видеофайла"\
+         --msgbox "\n
+Вы можете указать параметр -qscale 0 перед выходным файлом:
+ffmpeg -i video_input.wav -qscale 0 video_output.mp4" 0 0
+        ;;
+        12)
+whiptail --title "Указать кодеки"\
+         --msgbox "\n
+Указать кодеки, которые вы хотите использовать, добавив -c:a для аудио и -c:v для видео с последующим названием кодеков:
+ffmpeg -i video_input.mp4 -c:v copy -c:a libvorbis video_output.avi/n
+" 0 0
+        ;;
+        13)
+whiptail --title "Отключение звука в видео"\
+         --msgbox "\n
+Тег -an сделает все параметры звука для этого выходного файла бесполезными:
+ffmpeg -i video_input.mp4 -an -video_output.mp4\n
+" 0 0
+        ;;
+        14)
+whiptail --title "Изменение разрешения видео или соотношения сторон"\
+         --msgbox "\n
+указать новое разрешение после флага -s:
+ffmpeg -i video_input.mov -s 1024x576 video_output.mp4\n
+Кроме того, вы можете указать -c:a, чтобы убедиться в правильности аудиокодеков выходного файла:
+ffmpeg -i video_input.h264 -s 640x480 -c:a video_output.mov\n
+Вы также можете изменить соотношение сторон, используя -aspect:
+ffmpeg -i video_input.mp4 -aspect 4:3 video_output.mp4\n
+" 0 0
+        ;;
+        15)
+whiptail --title "Запись звука с микрофона"\
+         --msgbox "\n
+Запись звука без сжатия:
+ffmpeg -f pulse -i default -ac 2 audio.wav\n
+Запись звука в mp3:
+ffmpeg -f alsa -ac 2 -i default -acodec libmp3lame -ab 320k audio.mp3 -hide_banner -y\n
+или
+ffmpeg -f alsa -ac 2 -i pulse -ab 320k -acodec mp3 output.mp3\n
+или
+ffmpeg -f alsa -ac 2 -i pulse -ab 320k output.mka\n
+" 0 0
+        ;;
+        16)
+whiptail --title "Запись звука с микрофона и изображения с экрана"\
+         --msgbox "\n
+ffmpeg -f alsa -ac 2 -i pulse -f x11grab -r 30 -s 1920x1080 -i :0.0 -acodec pcm_s16le -vcodec libx264 -preset ultrafast -threads 0 output.mkv" 0 0
+        ;;
+        17)
+whiptail --title "Запись звука с динамика"\
+         --msgbox "ffmpeg -f pulse -i alsa_output.pci-0000_00_1b.0.analog-stereo.monitor -f pulse -i alsa_input.pci-0000_00_1b.0.analog-stereo -acodec libmp3lame -map 0:0 -map 1:0 outfile.mkv" 0 0
+        ;;
+        18)
+whiptail --title "Oпределения доступных для захвата аудиоустройств"\
+         --msgbox "pacmd list-sources" 0 0
+        ;;
+        19)
+whiptail --title "Стабилизация видео"\
+         --msgbox "ffmpeg -i video.mp4 -vf deshake output.mp4" 0 0
+        ;;
+        20)
+whiptail --title "Многопроходное кодирование с помощью ffmpeg"\
+         --msgbox "ffmpeg -i fichierentree -pass 2 -passlogfile ffmpeg2pass fichiersortie-2" 0 0
+        ;;
+        25)
+./ffmpegCompress
+        ;;
+        26)
+whiptail --title "Добавить звук к видео"\
+         --msgbox "ffmpeg -i son.wav -i video_origine.avi video_finale.mpg" 0 0
+        ;;
+        27)
+ne Ffmpeg
+        ;;
+        28)
+whiptail --title "Порезать видео на картинки"\
+         --msgbox "\n
+Эта команда создаст файлы image1.jpg, image2.jpg и т.д.,
+поддерживаются так же форматы PGM, PPM, PAM, PGMYUV, JPEG, GIF, PNG, TIFF, SGI.
+ffmpeg -i video.mpg image%d.jpg\n
+" 0 0
+        ;;
+        29)
+whiptail --title "Обрезать видео в ffmpeg"\
+         --msgbox "\n
+Эта команда вырежет отрезок из video.mp4 начиная с 01:10:35 длительностью 15 минут 10 секунд и сохранит его в файл output.mp4
+ffmpeg -ss 01:10:35 -i video.mp4 -c copy -t 00:15:10 output.mp4\n
+" 0 0
+        ;;
+        30)
+whiptail --title "Нарезать видео на ролики одинаковой длины"\
+         --msgbox "\n
+Нарезаем video.mp4 на ролики длительностью 15 секунд.
+ffmpeg -i video.mp4 -c copy -map 0 -segment_time 15 -reset_timestamps 1 -f segment output_%05d.mp4\n
+" 0 0
+        ;;
+        31)
+whiptail --title "Склеить видео"\
+         --msgbox "\n
+ffmpeg -i video1.mov -i video2.webm -filter_complex \"[0:v:0][0:a:0][1:v:0][1:a:0]concat=n=2:v=1:a=1[outv][outa]\" -map \"[outv]\" -map \"[outa]\" output.mkv\n
+" 0 0
+        ;;
+        32)
+whiptail --title "Объединяем два видео разных форматов с перекодировкой"\
+         --msgbox "\n
+ffmpeg -i video1.mov -i video2.mp4 -i video3.webm -filter_complex \"[0:v:0][0:a:0][1:v:0][1:a:0][2:v:0][2:a:0]concat=n=3:v=1:a=1[outv][outa]\"
+-map \"[outv]\" -map \"[outa]\" output.mp4\n
+" 0 0
+        ;;
+        33)
+whiptail --title "Захват видео"\
+         --msgbox "\n
+определить значение переменной \$DISPLAY
+echo \$DISPLAY
+:0\n
+и полученное значение подставляем ключику «-i»:
+ffmpeg -f x11grab  -y -rtbufsize 100M -s 1366x768 -framerate 30 -probesize 10M -draw_mouse 1 -i :0.0 -c:v libx264 -r 30 -preset ultrafast -tune zerolatency -crf 25 -pix_fmt yuv420p  screen.mp4
+\n
+Разберем подробнее параметры запуска ffmpeg.
+-y — если в текущей директории есть файл screen.mp4, то ffmpeg перезапишет его не задавая вопросов;
+-rtbufsize 100M — буфер под видео. Запись с экрана должна идти бысто и гладко, чтобы не было дропов (пропусков) кадров. Поэтому лучше сначала записывать видео в память (так  быстрее чем на диск), а затем ffmpeg сам перенесет из памяти на диск.
+-f gdigrab — опция необходима если вы пишите экран в Windows;
+-framerate 30 — частота кадров результирующего видео;
+-probesize 10M — количество кадров необходимое ffmpeg для идентификации потока. Вроде со значением 10M работает нормально;
+-draw_mouse 1 — рисовать мышку;
+-i desktop — говорим ffmpeg записывать весь экран;
+-c:v libx264 — сжимать будем в формат MP4 кодеком x264;
+-r 30 — кодек запишет видео с частотой 30 кадров в секунду;
+-preset ultrafast — говорим кодеку, чтобы долго не раздумывал и кодировал видеопоток, как можно быстрее (при записи экрана это актуально);
+-tune zerolatency — опция кодека x264 для ускорения кодирования;
+-crf 25 — качество записываемого видео (большее значение — хуже видео, меньшее — лучше);
+-pix_fmt yuv420p — цветорвой формат результирующего видео.
+" 0 0
+        ;;
+        34)
+whiptail --title "Объединяем три видео разных форматов с перекодировкой"\
+         --msgbox "\n
+Если у наших видео одинаковый формат, то можно сильно ускорить процесс и не потерять в качестве - объединить видео без перекодирования.
+Если у нас видео в формате mp4 или в чем-то похожем, то для начала предварительно преобразуем видео в формат .ts
+ffmpeg -i video1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts tmp1.ts
+ffmpeg -i video2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts tmp2.ts\n
+" 0 0
+        ;;
+        35)
+whiptail --title "Cклеиваем эти видео без перекодировки"\
+         --msgbox "ffmpeg -i \"concat:tmp1.ts|tmp2.ts\" -vcodec copy -acodec copy output.mp4" 0 0
+        ;;
+        36)
+whiptail --title "Если у нас видео в форматах .m2ts или .mts, то сначала их необходимо перевести в формат .mkv"\
+         --msgbox "\n
+ffmpeg -i video1.mts -acodec copy -vcodec copy -sn video1.mkv
+ffmpeg -i video2.mts -acodec copy -vcodec copy -sn video2.mkv\n
+" 0 0
+        ;;
+        37)
+whiptail --title "Cклеить без перекодировки"\
+         --msgbox "mkvmerge -o output.mkv video1.mkv + video2.mkv" 0 0
+        ;;
+        38)
+whiptail --title "Если хотим вставить другую аудиодорожку, то сначала убираем прежнюю"\
+         --msgbox "ffmpeg -i video.mp4 -c copy -an deaf.mp4" 0 0
+        ;;
+        39)
+whiptail --title "Oбрезаем новую аудиодорожку до длины ролика"\
+         --msgbox "ffmpeg -i long-sound.mp3 -ss 00:00:00 -t 00:05:13 -acodec copy sound.mp3" 0 0
+        ;;
+        40)
+whiptail --title "Видео из картинок"\
+         --msgbox "\n
+Кладем необходимое количество изображений в директорию и называем их image001.png, image002.png, image003.png и т.д., затем выполняем команду
+ffmpeg -framerate 1/5 -i image%03d.png -c:v libx264 -r 25 -pix_fmt yuv420p output.mp4
+где -framerate 1/5 время в секундах, которое будет показываться каждая картинка,
+-r 25 - количество кадров в секунду в получившемся видео.
+Разрешение видео будет равно разрешению первого изображения в серии.
+Если видео надо создать из картинок в формате .jpg, а не .png, то в директорию кладем image001.jpg и т.д. и в команде image%03d.png меняем на image%03d.jpg
+Если необходимо видео более чем из 999 картинок, то необходимо называть изображения image0001.png и т.д. и в команде image%03d.png заменить на image%04d.png\n
+" 0 0
+        ;;
+        41)
+whiptail --title "Видео с плавным переходом из image001.png в image002.png"\
+         --msgbox "\n
+ffmpeg -loop 1 -i image001.png -loop 1 -i image002.png -filter_complex
+\"[0:0]format=rgba,trim=duration=10,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[a];[1:0]format=rgba,
+trim=duration=10,fade=in:st=5:d=1:alpha=1,fade=out:st=9:d=1:alpha=1[b];[a][b]overlay=[out1]\" -map [out1] -qscale 25 output.mp4\n
+" 0 0
+        ;;
+        42)
+whiptail --title "Видео из одного изображения длительностью 10 секунд"\
+         --msgbox "ffmpeg -loop 1 -i image0001.png -c:v libx264 -t 10 -pix_fmt yuv420p output.mp4" 0 0
+        ;;
+        43)
+whiptail --title "Пережать webm в mp4 и обратно"\
+         --msgbox "\n
+Пережать webm в mp4
+ffmpeg -i video.webm video.mp4\n
+То же самое, но используя пресеты: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower and veryslow.
+ffmpeg -i video.webm -preset veryfast video.mp4
+Где ultrafast самое быстрое и наименее качественное сжатие, а veryslow - наоборот.
+Как показывает практика, разницы в качестве видео между slow и veryslow практически нет, а разница во времени сжатия очень ощутимая.
+То же самое, но с указанием crf
+ffmpeg -i video.webm -crf 26 video.mp4
+Значение crf может находиться в диапазоне от 0 до 51, где 51 - самое плохой качество видео.
+Если crf не указывать явно, то его значение будет равно 23.\n
+Пережать mp4 в webm
+ffmpeg -i video.mp4 -b:v 6203.788829380261k -crf 40 -aq-mode 1 -threads 4 -f webm output.webm
+Где -threads 4 указывает, что процесс сжатия надо проводить в 4 потока.
+Количество потоков лучше устанавливать равным количеству физических ядер вашего процессора.\n
+" 0 0
+        ;;
+        44)
+whiptail --title "Обрезать видео"\
+         --msgbox "\n
+Обрезаем до размера 1280x720 пикселей и сжимаем с битрейтом 3000 килобайт в секунду:
+ffmpeg -i video.mp4 -vf crop=1280:720 -b:v 3000K output.mp4\n
+" 0 0
+        ;;
+        45)
+whiptail --title "Повернуть видео"\
+         --msgbox "\n
+Повернуть видео можно двумя способами.
+Первый способ - изменение метаданных видео (перекодировки не происходит), но плейер должен поддерживать этот способ.
+ffmpeg -i input.mp4 -metadata:s:v rotate=\"90\" -codec copy output.mp4\n
+Второй способ - с перекодировкой видео - подходит для всех видеоплейеров.
+ffmpeg -i input.mp4 -vf \"transpose=1\" output.mp4\n
+Значения transpose:
+0 - на 90 градусов против часовой стрелки и вертикальное отзеркаливание
+1 - на 90 градусов по часовой стрелке
+2 - на 90 градусов против часовой стрелки
+3 - на 90 градусов по часовой стрелке и вертикальное отзеркаливание
+Для вращения видео на 180 градусов -vf \"transpose=2,transpose=2\"\n
+" 0 0
+       ;;
+       46)
+whiptail --title "Уменьшить частоту кадров"\
+         --msgbox "\n
+ffmpeg -y -i video.mp4 -r 25
+Где -r 25 указывает, что частота кадров в секунду будет урезана до 25.
+Если мы не указываем в конце команды название итогового файла, то будет перезаписан исходный файл.
+Ключ -y указывает на то, что существующие файлы надо перезаписывать без подтверждения.\n
+" 0 0
+       ;;
+       47)
+whiptail --title "Устранение чересстрочности"\
+         --msgbox "\n
+ffmpeg -i video.avi -vf w3fdif -c:v libx264 -preset slow -crf 12 -pix_fmt yuv420p -c:a aac -b:a 320k output.mp4
+Где -vf w3fdif указывает алгоритм устранения чересстрочности. Всего существует четыре алгоритма: w3fdif bwdif kerndeint yadif.\n
+" 0 0
+       ;;
+       48)
+whiptail --title "Картинки из видео"\
+         --msgbox "\n
+-r указывает частоту кадров
+-f указывает формат вывода
+ffmpeg -i video.mp4 -r 1 -f image2 image-%3d.png\n
+Сохранить из видео все ключевые кадры, начиная с 28-ой секунды и в течение 10 секунд:
+ffmpeg -ss 00:00:28 -i video.mp4 -t 10 -q:v 2 -vf select=\"eq(pict_type\\,PICT_TYPE_I)\" -vsync 0 image%03d.jpg
+" 0 0
+       ;;
+       49)
+whiptail --title "Установка ffmpeg в Ubuntu"\
+         --msgbox "\n
+sudo add-apt-repository universe
+sudo apt update
+sudo apt install ffmpeg\n
+Существует неофициальный PPA, который вы можете использовать для установки последней версии ffmpeg. Просто используйте эти команды:
+sudo add-apt-repository ppa:jonathonf/ffmpeg-4
+sudo apt update
+sudo apt install ffmpeg -y
+\n
+" 0 0
+;;
+        50)
+whiptail --title "Основные строительные блоки"\
+         --msgbox "\n
+ ffplay - простой медиаплеер на основе SDL и библиотек FFmpeg
+ ffprobe - простой мультимедийный анализатор потоков
+ ffmpeg - инструмент командной строки для конвертации мультимедийных файлов между форматами
+ также содержит библиотеки для разработчиков:
+ libavutil
+ libavcodec
+ libavformat
+ libavdevice
+ libavfilter
+ libswscale
+ libswresample
+\n " 0 0
+;; 
+        *) status=1
+        exit
+            ;;
+        esac
+    done
+else
+    exit
+fi

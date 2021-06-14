@@ -1,0 +1,58 @@
+#!/bin/bash
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+    status="0"
+    while [ "$status" -eq 0 ]  
+    do
+    choice=$(whiptail --backtitle "Программа написана на Whiptail"\
+                      --title "Редактирование ауди и видео файла с помощью ffmpeg"\
+                      --menu "
+ffmpeg — это кроссплатформенная open-source библиотека для обработки видео- и аудиофайлов.
+Клавишами верх/низ выберите справку и нажмите enter.
+Для выхода выберите <Cancel>" 0 0 12 \
+"1" "Сжать .avi в VCD mpeg2" \
+"2" "Сжать .avi в SVCD mpeg2" \
+"3" "Сжать OGG Theora в mpeg DVD" \
+"4" "Сжать .avi в DivX" \
+"5" "Сжать видео" \
+3>&2 2>&1 1>&3)
+        option=$(echo $choice | tr '[:upper:]' '[:lower:]' | sed 's/ //g')
+        case "${option}" in
+        1)
+whiptail --title "Сжать .avi в VCD mpeg2"\
+         --msgbox "\n
+Формат NTSC:
+ffmpeg -i video_origine.avi -target ntsc-vcd video_finale.mpg\n
+Формат PAL:
+ffmpeg -i video_origine.avi -target pal-vcd video_finale.mpg
+\n" 0 0
+        ;;
+        2)
+whiptail --title "Сжать .avi в SVCD mpeg2"\
+         --msgbox "\n
+Формат NTSC:
+ffmpeg -i video_origine.avi -target ntsc-svcd video_finale.mpg\n
+Формат PAL:
+ffmpeg -i video_origine.avi -target pal-svcd video_finale.mpg\n
+" 0 0
+        ;;
+        3)
+whiptail --title "Сжать OGG Theora в mpeg DVD"\
+         --msgbox "ffmpeg -i film_sortie_cinelerra.ogm -s 720x576 -vcodec mpeg2video -acodec mp3 film_termin.mpg" 0 0
+        ;;
+        4)
+whiptail --title "Сжать .avi в DivX"\
+         --msgbox "ffmpeg -i video_origine.avi -s 320x240 -vcodec msmpeg4v2 video_finale.avi" 0 0
+        ;;
+        5)
+whiptail --title "Сжать видео"\
+         --msgbox "ffmpeg -i video.mp4 -c:v libx264 -preset slow -crf 18 -c:a copy out.mp4" 0 0
+        ;; 
+        *) status=1
+        exit
+            ;;
+        esac
+    done
+else
+    exit
+fi
